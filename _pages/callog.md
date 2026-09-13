@@ -42,7 +42,7 @@ toc_sticky: true
   <div class="port-tech-group"><div class="ptg-label">Backend &amp; Auth</div><div class="ptg-badges"><span class="port-badge pb-b">Java</span><span class="port-badge pb-b">Spring Boot</span><span class="port-badge pb-b">Spring Security</span><span class="port-badge pb-b">JWT</span></div></div>
   <div class="port-tech-group"><div class="ptg-label">Messaging &amp; Data</div><div class="ptg-badges"><span class="port-badge pb-p">Kafka</span><span class="port-badge pb-g">MongoDB</span><span class="port-badge pb-g">MariaDB</span></div></div>
   <div class="port-tech-group"><div class="ptg-label">AI &amp; Automation</div><div class="ptg-badges"><span class="port-badge pb-r">OCR</span><span class="port-badge pb-r">n8n</span><span class="port-badge pb-r">Layout Analysis</span></div></div>
-  <div class="port-tech-group"><div class="ptg-label">Development Environment</div><div class="ptg-badges"><span class="port-badge pb-o">Docker</span></div></div>
+  <div class="port-tech-group"><div class="ptg-label">Development &amp; Deployment</div><div class="ptg-badges"><span class="port-badge pb-o">Docker</span><span class="port-badge pb-o">Kubernetes</span></div></div>
 </div>
 
 ### 프로젝트 공통 기술 스택
