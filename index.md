@@ -29,30 +29,58 @@ masthead_title: "Joohyeng's Portfolio"
       </div>
     </section>
   </div>
+  <div class="port-hero-photo">
+    <img src="/assets/images/profile.png" alt="김주형 프로필 사진">
+  </div>
 </div>
 
 ---
 
-<h2 id="profile">Profile</h2>
+<h2 id="certification">Certification</h2>
 
 <div class="port-tl-wrap port-cert-lang-wrap">
-  <div class="port-cert-col">
-    <div class="port-tl-section">Education</div>
-    <div class="port-timeline">
-      <div class="port-tl-item">
-        <div class="port-tl-date">UPDATE</div>
-        <div class="port-tl-title">학력 및 교육 이력</div>
-        <div class="port-tl-sub">개인 정보를 확인한 뒤 업데이트할 예정입니다.</div>
-      </div>
-    </div>
-  </div>
   <div class="port-cert-col">
     <div class="port-tl-section">Certification</div>
     <div class="port-timeline">
       <div class="port-tl-item">
+        <div class="port-tl-date">2024.06</div>
+        <div class="port-tl-title">정보처리기사</div>
+        <div class="port-tl-sub">한국산업인력공단</div>
+      </div>
+    </div>
+  </div>
+  <div class="port-cert-col">
+    <div class="port-tl-section">Language</div>
+    <div class="port-timeline">
+      <div class="port-tl-item">
         <div class="port-tl-date">UPDATE</div>
-        <div class="port-tl-title">자격증 및 어학</div>
-        <div class="port-tl-sub">지원 서류에 맞춰 추가할 예정입니다.</div>
+        <div class="port-tl-title">어학 정보</div>
+        <div class="port-tl-sub">추가 예정</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+<h2 id="education">Graduate / Education</h2>
+
+<div class="port-tl-wrap port-cert-lang-wrap">
+  <div class="port-cert-col">
+    <div class="port-tl-section">Graduate</div>
+    <div class="port-timeline">
+      <div class="port-tl-item">
+        <div class="port-tl-date">2018.03 ~ 2024.02</div>
+        <div class="port-tl-title">한신대학교 졸업</div>
+      </div>
+    </div>
+  </div>
+  <div class="port-cert-col">
+    <div class="port-tl-section">Education</div>
+    <div class="port-timeline">
+      <div class="port-tl-item">
+        <div class="port-tl-title">한화 Beyond SW Camp</div>
+        <div class="port-tl-sub">24기 수료 · FE·BE·DevOps</div>
       </div>
     </div>
   </div>
