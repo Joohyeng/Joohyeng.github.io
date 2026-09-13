@@ -1,40 +1,11 @@
-# main links
+# Main header links
 main: []
-  # - title: "Home"
-  #   url: /
 
-  # - title: "Devlog"
-  #   url: /devlog/
-
-  # - title: "GitHub"
-  #   url: https://github.com/sw-oo
-
-  # - title: "Projects"
-  #   url: /projects/
-
-  # - title: "Categories"
-  #   url: /categories/
-
-# Project pages sidebar
+# Sidebar navigation for project detail pages
 projects_nav:
-  - title: "← Home"
+  - title: "← Portfolio Home"
     url: "/"
-  - title: "Poticard"
-    url: "/project/poticard/"
-  - title: "DnDn"
-    url: "/project/dndn/"
-
-# sidebar navigation (categories)
-# 2022.02.15 sidebar update : simple ver.
-categories:
-  - title: "Algorithm"
-    url: /categories/algorithm/
-
-  - title: "Project"
-    url: /categories/project/
-
-  - title: "Certification"
-    url: /categories/certification/
-
-  - title: "Article"
-    url: /categories/article/
+  - title: "FileInNOut"
+    url: "/project/file-in-n-out/"
+  - title: "Callog"
+    url: "/project/callog/"
