@@ -38,7 +38,7 @@ masthead_title: "Joohyeng's Portfolio"
 
 <h2 id="certification">Certification</h2>
 
-<div class="port-tl-wrap port-cert-lang-wrap">
+<div class="port-tl-wrap">
   <div class="port-cert-col">
     <div class="port-tl-section">Certification</div>
     <div class="port-timeline">
@@ -46,16 +46,6 @@ masthead_title: "Joohyeng's Portfolio"
         <div class="port-tl-date">2024.06</div>
         <div class="port-tl-title">정보처리기사</div>
         <div class="port-tl-sub">한국산업인력공단</div>
-      </div>
-    </div>
-  </div>
-  <div class="port-cert-col">
-    <div class="port-tl-section">Language</div>
-    <div class="port-timeline">
-      <div class="port-tl-item">
-        <div class="port-tl-date">UPDATE</div>
-        <div class="port-tl-title">어학 정보</div>
-        <div class="port-tl-sub">추가 예정</div>
       </div>
     </div>
   </div>
