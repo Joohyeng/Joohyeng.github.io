@@ -24,7 +24,7 @@ masthead_title: "Joohyeng's Portfolio"
         </a>
         <span class="port-contact-item">
           <span class="port-contact-icon"><i class="fas fa-envelope"></i></span>
-          <span>Email · 업데이트 예정</span>
+          <span>Email · wngudxogh@naver.com</span>
         </span>
       </div>
     </section>
