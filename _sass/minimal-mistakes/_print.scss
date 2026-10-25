@@ -177,8 +177,7 @@
   a[href^='http://']:after,
   a[href^='https://']:after,
   a[href^='ftp://']:after {
-    content: " (" attr(href) ")";
-    font-size: 80%;
+    content: none;
   }
 
   abbr[title]:after,
