@@ -36,27 +36,6 @@ masthead_title: "Joohyeng's Portfolio"
 
 ---
 
-<h2 id="projects">Projects</h2>
-
-<div class="port-proj-cards">
-  <a class="port-proj-card" href="/project/callog/">
-    <div class="ppc-type">AI Integration · MSA · 5인 팀</div>
-    <div class="ppc-title">Callog</div>
-    <div class="ppc-period">기업 간 캠페인 협업·광고물 검수 플랫폼</div>
-    <div class="ppc-desc">기업들이 캠페인을 함께 관리하고 광고물을 AI로 점검하는 서비스입니다. AI 검수·결과 조회와 Kafka 기반 캠페인·권한 동기화를 담당했습니다.</div>
-    <div class="ppc-tags"><span class="ppc-tag">Spring Boot</span><span class="ppc-tag">n8n</span><span class="ppc-tag">Kafka</span><span class="ppc-tag">MongoDB</span><span class="ppc-tag">Kubernetes</span></div>
-  </a>
-  <a class="port-proj-card" href="/project/file-in-n-out/">
-    <div class="ppc-type">Realtime Collaboration · Team Project</div>
-    <div class="ppc-title">FileInNOut</div>
-    <div class="ppc-period">실시간 파일·문서 협업 서비스</div>
-    <div class="ppc-desc">파일·문서 관리와 대화를 한곳에서 이어가는 협업 서비스입니다. 채팅·알림의 프론트엔드·백엔드와 페이징·집계 쿼리·캐시를 활용한 조회 개선을 담당했습니다.</div>
-    <div class="ppc-tags"><span class="ppc-tag">Spring Boot</span><span class="ppc-tag">Vue 3</span><span class="ppc-tag">WebSocket</span><span class="ppc-tag">Redis</span></div>
-  </a>
-</div>
-
----
-
 <h2 id="certification">Certification</h2>
 
 <div class="port-tl-wrap">
@@ -150,6 +129,27 @@ masthead_title: "Joohyeng's Portfolio"
       <div class="port-skill-item"><div class="si-icon"><i class="fab fa-jenkins"></i></div><div class="si-body"><div class="si-name">Jenkins · CI/CD</div><div class="si-desc">팀의 빌드·배포 파이프라인을 활용해 애플리케이션 변경을 배포했습니다.</div></div></div>
     </div>
   </div>
+</div>
+
+---
+
+<h2 id="projects">Projects</h2>
+
+<div class="port-proj-cards">
+  <a class="port-proj-card" href="/project/callog/">
+    <div class="ppc-type">AI Integration · MSA · 5인 팀</div>
+    <div class="ppc-title">Callog</div>
+    <div class="ppc-period">기업 간 캠페인 협업·광고물 검수 플랫폼</div>
+    <div class="ppc-desc">기업들이 캠페인을 함께 관리하고 광고물을 AI로 점검하는 서비스입니다. AI 검수·결과 조회와 Kafka 기반 캠페인·권한 동기화를 담당했습니다.</div>
+    <div class="ppc-tags"><span class="ppc-tag">Spring Boot</span><span class="ppc-tag">n8n</span><span class="ppc-tag">Kafka</span><span class="ppc-tag">MongoDB</span><span class="ppc-tag">Kubernetes</span></div>
+  </a>
+  <a class="port-proj-card" href="/project/file-in-n-out/">
+    <div class="ppc-type">Realtime Collaboration · Team Project</div>
+    <div class="ppc-title">FileInNOut</div>
+    <div class="ppc-period">실시간 파일·문서 협업 서비스</div>
+    <div class="ppc-desc">파일·문서 관리와 대화를 한곳에서 이어가는 협업 서비스입니다. 채팅·알림의 프론트엔드·백엔드와 페이징·집계 쿼리·캐시를 활용한 조회 개선을 담당했습니다.</div>
+    <div class="ppc-tags"><span class="ppc-tag">Spring Boot</span><span class="ppc-tag">Vue 3</span><span class="ppc-tag">WebSocket</span><span class="ppc-tag">Redis</span></div>
+  </a>
 </div>
 
 <script>
