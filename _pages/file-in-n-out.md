@@ -34,16 +34,16 @@ FileInNOut는 팀이 파일과 문서를 한곳에서 관리하고, 채팅과 �
 
 ## 채팅 기능 시연
 
-기존 Frontend README에 등록된 채팅 시연입니다. 제가 담당한 채팅 화면과 메시지를 주고받는 흐름을 볼 수 있습니다.
+3차 백엔드 프로젝트 README의 **‘3. 실시간 채팅’** 시연입니다. 텍스트·이미지·파일 메시지를 주고받고, 읽음 상태와 알림을 확인하는 흐름을 보여줍니다.
 
 <figure>
-  <a href="/assets/images/projects/fileinnout-chat-demo.gif" target="_blank" rel="noopener noreferrer">
-    <img src="/assets/images/projects/fileinnout-chat-demo.gif" alt="FileInNOut 채팅 화면과 메시지 송수신을 보여주는 기존 기능 시연" loading="lazy" />
+  <a href="/assets/images/projects/fileinnout-chat-demo.gif?v=dc728970" target="_blank" rel="noopener noreferrer">
+    <img src="/assets/images/projects/fileinnout-chat-demo.gif?v=dc728970" alt="3차 백엔드 프로젝트의 실시간 채팅 시연: 텍스트·이미지·파일 메시지, 읽음 상태와 알림" loading="lazy" />
   </a>
-  <figcaption>팀 프로젝트의 기존 채팅 시연. 조회 구조의 변경 전후는 아래 작업 커밋을 근거로 설명합니다.</figcaption>
+  <figcaption>3차 프로젝트 README의 실시간 채팅 시연. 조회 구조의 변경 전후는 아래 작업 커밋을 근거로 설명합니다.</figcaption>
 </figure>
 
-[시연 출처 — Frontend README의 채팅 기능](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/frontend/README.md) · [채팅 화면 구현 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/frontend/src/components/ChatRoom.vue)
+[시연 출처 — 3차 백엔드 프로젝트 README의 ‘3. 실시간 채팅’](https://github.com/beyond-sw-camp/be24-3rd-ShakeShackFile-In-N-Out-File/blob/dc728970343d65edb0c17a492572e4cb42236fbc/README.md) · [채팅 화면 구현 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/frontend/src/components/ChatRoom.vue)
 
 ## 메시지와 화면 상태의 처리 흐름
 
