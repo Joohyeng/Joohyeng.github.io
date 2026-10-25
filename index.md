@@ -112,42 +112,42 @@ masthead_title: "Joohyeng's Portfolio"
 
   <div id="tab-ai" class="port-tab-panel active">
     <div class="port-skill-grid">
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-project-diagram"></i></div><div class="si-body"><div class="si-name">n8n</div><div class="si-desc">추출 텍스트를 검수 워크플로에 전달하고 결과 저장·조회 흐름을 연결했습니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-file-alt"></i></div><div class="si-body"><div class="si-name">OCR · Layout Analysis</div><div class="si-desc">파일의 내용 추출 기능을 AI 판사 모듈에 연결하고 분석 산출물을 관리했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-project-diagram"></i></div><div class="si-body"><div class="si-name">n8n</div><div class="si-desc">추출 텍스트를 웹훅으로 전달하고 검수 응답·오류 정보를 결과 저장과 연결했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-file-alt"></i></div><div class="si-body"><div class="si-name">OCR · Layout Analysis</div><div class="si-desc">기존 내용 추출 기능을 AI 판사 모듈로 이전하고 분석 산출물을 관리했습니다.</div></div></div>
       <div class="port-skill-item"><div class="si-icon"><i class="fas fa-exchange-alt"></i></div><div class="si-body"><div class="si-name">AI 결과 처리</div><div class="si-desc">작업 식별자로 결과와 파일 정보를 연결하고 오류 정보·상세 조회를 구성했습니다.</div></div></div>
     </div>
   </div>
 
   <div id="tab-backend" class="port-tab-panel">
     <div class="port-skill-grid">
-      <div class="port-skill-item"><div class="si-icon"><i class="fab fa-java"></i></div><div class="si-body"><div class="si-name">Java · Spring Boot</div><div class="si-desc">도메인 중심 REST API와 서비스 모듈을 설계하고 구현합니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-shield-alt"></i></div><div class="si-body"><div class="si-name">Spring Security</div><div class="si-desc">인증·인가 흐름과 JWT 기반 보안 구성을 다룹니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-database"></i></div><div class="si-body"><div class="si-name">JPA · MariaDB</div><div class="si-desc">엔티티 관계와 트랜잭션을 고려한 데이터 접근 계층을 구현합니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-file-code"></i></div><div class="si-body"><div class="si-name">OpenAPI · Swagger</div><div class="si-desc">프론트엔드·백엔드가 함께 사용할 API 계약을 문서화합니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fab fa-java"></i></div><div class="si-body"><div class="si-name">Java · Spring Boot</div><div class="si-desc">채팅 API와 AI 검수의 파일 처리·결과 저장·조회 흐름을 구현했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-shield-alt"></i></div><div class="si-body"><div class="si-name">인증·화면 접근 제어</div><div class="si-desc">로그인·토큰 갱신을 화면과 연결하고 Router Guard로 접근을 구분했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-database"></i></div><div class="si-body"><div class="si-name">JPA · MariaDB</div><div class="si-desc">채팅방·메시지 조회에 DB 페이지네이션과 식별자 묶음 집계 쿼리를 적용했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-file-code"></i></div><div class="si-body"><div class="si-name">OpenAPI · Swagger</div><div class="si-desc">프로젝트 API 명세를 바탕으로 프론트 요청과 서버의 응답 형식을 맞췄습니다.</div></div></div>
     </div>
   </div>
 
   <div id="tab-data" class="port-tab-panel">
     <div class="port-skill-grid">
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-stream"></i></div><div class="si-body"><div class="si-name">Kafka</div><div class="si-desc">서비스 간 비동기 이벤트 전달과 후속 처리 흐름을 구성합니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-database"></i></div><div class="si-body"><div class="si-name">MongoDB · Redis</div><div class="si-desc">사용 목적에 맞는 데이터 저장소를 선택하고 연동합니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-bolt"></i></div><div class="si-body"><div class="si-name">Event-driven Flow</div><div class="si-desc">요청 흐름과 이벤트 처리의 책임을 분리하는 방식을 학습·적용합니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-stream"></i></div><div class="si-body"><div class="si-name">Kafka</div><div class="si-desc">캠페인·참여자 변경 이벤트를 발행·수신해 AI Judge의 조회용 데이터에 반영했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-database"></i></div><div class="si-body"><div class="si-name">MongoDB · Redis</div><div class="si-desc">MongoDB에 검수 메타데이터를, Redis에 채팅 목록 캐시와 입장 상태를 저장했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-bolt"></i></div><div class="si-body"><div class="si-name">Event-driven Flow</div><div class="si-desc">검수 요청 경로와 캠페인 정보의 이벤트 동기화 경로를 나누어 구성했습니다.</div></div></div>
     </div>
   </div>
 
   <div id="tab-collaboration" class="port-tab-panel">
     <div class="port-skill-grid">
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-comments"></i></div><div class="si-body"><div class="si-name">WebSocket · STOMP</div><div class="si-desc">채팅·협업 상황에 맞춘 실시간 메시지 전달 구조를 구현합니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-bell"></i></div><div class="si-body"><div class="si-name">SSE</div><div class="si-desc">서버 이벤트를 사용자 화면에 즉시 전달하는 알림 채널을 구성합니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-comments"></i></div><div class="si-body"><div class="si-name">WebSocket · STOMP</div><div class="si-desc">채팅방별 구독으로 새 메시지와 읽음 상태 변경을 화면에 전달했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-bell"></i></div><div class="si-body"><div class="si-name">SSE</div><div class="si-desc">채팅방 미리보기와 읽지 않은 메시지 상태를 이벤트로 갱신했습니다.</div></div></div>
       <div class="port-skill-item"><div class="si-icon"><i class="fas fa-file-alt"></i></div><div class="si-body"><div class="si-name">Web Push · Service Worker</div><div class="si-desc">백그라운드 알림과 브라우저의 Push 구독 흐름을 연결했습니다.</div></div></div>
     </div>
   </div>
 
   <div id="tab-infra" class="port-tab-panel">
     <div class="port-skill-grid">
-      <div class="port-skill-item"><div class="si-icon"><i class="fab fa-docker"></i></div><div class="si-body"><div class="si-name">Docker</div><div class="si-desc">개발·배포 환경을 컨테이너로 일관되게 구성합니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-cubes"></i></div><div class="si-body"><div class="si-name">Kubernetes</div><div class="si-desc">서비스 배포와 운영 환경의 기본 흐름을 이해하고 적용합니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fab fa-jenkins"></i></div><div class="si-body"><div class="si-name">Jenkins · CI/CD</div><div class="si-desc">빌드·테스트·배포 과정을 자동화하는 파이프라인을 구성합니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fab fa-docker"></i></div><div class="si-body"><div class="si-name">Docker</div><div class="si-desc">프로젝트의 백엔드·프론트엔드를 컨테이너 이미지로 실행하고 배포했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-cubes"></i></div><div class="si-body"><div class="si-name">Kubernetes</div><div class="si-desc">sub 환경에서 변경을 확인한 뒤 main 환경에 반영하는 배포 작업에 참여했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fab fa-jenkins"></i></div><div class="si-body"><div class="si-name">Jenkins · CI/CD</div><div class="si-desc">팀의 빌드·배포 파이프라인을 활용해 애플리케이션 변경을 배포했습니다.</div></div></div>
     </div>
   </div>
 </div>
