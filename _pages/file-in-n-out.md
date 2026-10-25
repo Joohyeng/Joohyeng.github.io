@@ -38,10 +38,50 @@ FileInNOut는 팀이 파일과 문서를 한곳에서 관리하고, 채팅과 �
 | --- | --- | --- |
 | 채팅방에 들어가 이전 대화 확인 | REST API·DB 페이지네이션 | 메시지 이력과 참여 정보를 조회 |
 | 새 메시지 전송·수신 | WebSocket·STOMP | 임시 메시지를 먼저 표시하고 서버의 실제 메시지로 교체 |
+| 이미지·파일 공유 | HTTP 업로드·STOMP 메시지 | 객체 스토리지에 파일을 저장한 뒤 URL과 파일 정보를 메시지에 포함 |
 | 과거 대화로 스크롤 | IntersectionObserver | 이전 메시지 20개씩 조회하고 추가 전후 높이 차이로 위치 보정 |
-| 읽음 상태와 새 활동 확인 | STOMP·SSE·Web Push | 읽음 상태 갱신, 인앱 알림과 백그라운드 알림 연결 |
+| 메시지 읽음 처리 | REST 요청·STOMP 이벤트 | 마지막 읽은 메시지를 기록하고 방 구독자에게 읽음 상태 반영 |
+| 새 활동과 채팅방 미리보기 확인 | SSE·Web Push | 인앱 상태 갱신과 백그라운드 알림 전달 |
+| 현재 채팅방을 보고 있는 상태 유지 | Redis·heartbeat | 입장 상태의 TTL을 갱신하고 불필요한 알림 대상에서 제외 |
 
 아래 기술 의사결정에는 이 흐름을 구현한 코드와 조회 개선 근거를 연결했습니다.
+
+## 그룹챗 성능 테스트 비교
+
+팀 원본 저장소 위키에 공개된 nGrinder의 **`WaffleBearGroupChatScenario`** 개선 전후 결과입니다. 두 실행 모두 **100 VUser**이며, 그룹챗 시나리오의 TPS는 **314.7 → 829.2**, 평균 테스트 시간은 **305.52 → 84.28ms**로 기록되어 있습니다.
+
+| 지표 | 개선 전 | 개선 후 | 변화 |
+| --- | --- | --- | --- |
+| 총 VUser | 100 | 100 | 동일 |
+| TPS | 314.7 | 829.2 | 약 **2.63배** |
+| 최고 TPS | 407.0 | 981.0 | 약 2.41배 |
+| 평균 테스트 시간 | 305.52ms | 84.28ms | 약 **72.4% 감소** |
+| 총 실행 테스트 | 5,044 | 5,004 | 원본 기록 |
+| 성공한 테스트 | 5,044 | 5,004 | 원본 기록 |
+| 에러 | 0 | 0 | 두 실행 모두 0건 |
+| 동작 시간 | 23초 | 13초 | 원본 기록 |
+
+위키는 그룹챗 개선 항목으로 **메시지 목록의 프로필 이미지 배치 조회와 조회 컬럼의 인덱스 보강**을 정리합니다. 현재 메시지 목록 코드에서도 메시지 식별자별 미읽음 수를 묶어서 집계하고, 같은 발신자의 프로필 이미지 조회 결과를 요청 안에서 재사용하는 구조를 확인할 수 있습니다.
+
+이 표는 생성·조회·삭제가 포함된 **그룹챗 시나리오 전체의 팀 측정 기록**입니다. 테스트별 실행 횟수와 동작 시간이 다르며, 채팅방 목록이나 메시지 이력 API 하나의 단독 성능 수치로 환산하지 않았습니다.
+
+[성능 테스트 원문과 개선 항목](https://github.com/beyond-sw-camp/be24-4th-ShakeShackFile-In-N-Out-File/wiki/성능-테스트#4-7-그룹-챗) · [메시지 목록의 묶음 집계·프로필 결과 재사용 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatMessageService.java#L55-L105)
+
+<details>
+  <summary>nGrinder 원본 보고서 — 개선 전·후 화면</summary>
+  <figure>
+    <a href="/assets/images/projects/fileinnout-group-chat-before.png" target="_blank" rel="noopener noreferrer">
+      <img src="/assets/images/projects/fileinnout-group-chat-before.png" alt="그룹챗 개선 전 nGrinder 보고서: 100 VUser, TPS 314.7, 평균 테스트 시간 305.52ms, 에러 0건" loading="lazy" />
+    </a>
+    <figcaption>개선 전 — 팀 위키 성능 테스트 원본 보고서</figcaption>
+  </figure>
+  <figure>
+    <a href="/assets/images/projects/fileinnout-group-chat-after.png" target="_blank" rel="noopener noreferrer">
+      <img src="/assets/images/projects/fileinnout-group-chat-after.png" alt="그룹챗 개선 후 nGrinder 보고서: 100 VUser, TPS 829.2, 평균 테스트 시간 84.28ms, 에러 0건" loading="lazy" />
+    </a>
+    <figcaption>개선 후 — 팀 위키 성능 테스트 원본 보고서</figcaption>
+  </figure>
+</details>
 
 ## 기술 스택
 
@@ -50,7 +90,7 @@ FileInNOut는 팀이 파일과 문서를 한곳에서 관리하고, 채팅과 �
 <div class="port-tech-groups">
   <div class="port-tech-group"><div class="ptg-label">Frontend</div><div class="ptg-badges"><span class="port-badge pb-b">Vue 3</span><span class="port-badge pb-b">JavaScript</span></div></div>
   <div class="port-tech-group"><div class="ptg-label">Backend</div><div class="ptg-badges"><span class="port-badge pb-b">Java</span><span class="port-badge pb-b">Spring Boot</span><span class="port-badge pb-b">Spring Security</span><span class="port-badge pb-b">JPA</span></div></div>
-  <div class="port-tech-group"><div class="ptg-label">Real-time &amp; Notification</div><div class="ptg-badges"><span class="port-badge pb-p">WebSocket · STOMP</span><span class="port-badge pb-p">SSE</span><span class="port-badge pb-p">Web Push</span></div></div>
+  <div class="port-tech-group"><div class="ptg-label">Real-time &amp; Notification</div><div class="ptg-badges"><span class="port-badge pb-p">WebSocket · STOMP</span><span class="port-badge pb-p">SockJS</span><span class="port-badge pb-p">SSE</span><span class="port-badge pb-p">Web Push</span></div></div>
   <div class="port-tech-group"><div class="ptg-label">Data</div><div class="ptg-badges"><span class="port-badge pb-g">MariaDB</span><span class="port-badge pb-g">Redis</span></div></div>
 </div>
 
@@ -73,8 +113,12 @@ FileInNOut는 팀이 파일과 문서를 한곳에서 관리하고, 채팅과 �
 채팅방에 처음 들어왔을 때 필요한 것은 이전 메시지 목록, 참여자 정보, 읽지 않은 메시지 수처럼 현재 상태를 조회하는 일입니다. 반면 대화 중에는 새 메시지와 읽음 상태가 요청 없이도 즉시 화면에 도착해야 합니다. 모든 동작을 하나의 통신 방식으로 처리하면 이력 조회의 페이지 처리와 실시간 이벤트의 재연결·중복 처리가 서로 얽힐 수 있다고 판단했습니다.
 
 <div class="port-decision">
-메시지 이력은 REST API로 페이지 단위 조회하고, 새 메시지·읽음 상태는 WebSocket/STOMP로 전달했습니다. 전송 직후에는 임시 식별자를 가진 메시지를 먼저 보여 주고, 서버에서 전달한 실제 메시지로 교체해 응답을 기다리는 공백과 빠른 연속 전송에서 발생할 수 있는 중복 표시를 줄였습니다.
+메시지 이력·업로드·읽음 처리 요청은 REST API로 처리하고, 새 메시지와 읽음 상태 변경의 전파는 WebSocket/STOMP로 연결했습니다. 채팅방마다 목적지를 구독해 같은 방의 이벤트를 받을 수 있도록 했으며, 연결에는 SockJS를 사용했습니다. 전송 직후에는 임시 식별자를 가진 메시지를 먼저 보여 주고, 서버의 실제 메시지로 교체해 응답 대기 중의 공백과 중복 표시를 줄였습니다.
 </div>
+
+예를 들어 읽음 처리는 `POST /chat/{roomIdx}/read`로 요청하고, 처리 결과는 `READ_UPDATE` 이벤트로 같은 방 구독자에게 전달합니다. 메시지의 발행 경로와 구독 경로는 각각 `/pub/chat/{roomIdx}`, `/sub/chat/room/{roomIdx}`로 구분했습니다.
+
+첨부 파일은 `POST /chat/{roomIdx}/upload`로 먼저 업로드하고, 반환된 파일 URL과 정보를 포함한 메시지를 WebSocket으로 전달합니다. 파일 전송과 채팅 이벤트를 나누어 처리했습니다.
 
 [채팅 메시지 처리 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatMessageService.java) · [화면의 메시지 상태 처리](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/frontend/src/components/ChatRoom.vue)
 
@@ -95,10 +139,12 @@ FileInNOut는 팀이 파일과 문서를 한곳에서 관리하고, 채팅과 �
 사용자가 서비스 화면을 보고 있을 때와 브라우저를 닫거나 다른 탭을 보고 있을 때는 알림을 받는 목적이 다릅니다. 전자는 화면 안에서 어떤 채팅방에 변화가 생겼는지 빠르게 확인하면 되고, 후자는 서비스 밖에서도 새 활동을 놓치지 않아야 합니다. 하나의 채널로 처리하면 화면을 보고 있는 중에도 브라우저 알림이 반복되거나, 백그라운드에서 알림을 놓칠 수 있습니다.
 
 <div class="port-decision">
-서비스 화면에서는 SSE로 인앱 알림과 읽지 않은 상태를 갱신하고, 백그라운드에서는 Service Worker와 Web Push로 알림을 표시하도록 연결했습니다. 같은 이벤트라도 사용자 상태에 따라 전달 방식을 분기해, 즉시성은 유지하면서 불필요한 중복 알림을 줄이고자 했습니다.
+서버에서는 알림 저장 후 SSE와 Push를 전달하고, SSE의 `chat-preview-update`·`new-message` 이벤트로 채팅방 목록과 미읽음 상태를 갱신했습니다. Service Worker는 화면이 보이는 클라이언트가 있으면 화면에 이벤트를 전달하고, 보이는 화면이 없을 때 OS 알림을 표시하도록 분기했습니다. 알림 클릭 시 해당 채팅방으로 이동하는 흐름도 연결했습니다.
 </div>
 
-[알림 서비스 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/notification/NotificationService.java) · [Web Push 구독 연계](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/frontend/src/utils/pushNotification.js)
+SSE는 앱 내부의 단방향 상태 갱신, WebSocket/STOMP는 채팅방의 양방향 메시지, Web Push는 서비스 화면 밖의 알림 수신을 담당합니다.
+
+[알림 서비스 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/notification/NotificationService.java) · [Web Push 구독 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/frontend/src/utils/pushNotification.js) · [Service Worker의 화면 상태 분기](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/frontend/public/sw.js)
 
 ### 4. 채팅방 목록의 N+1 조회 병목을 페이지네이션·집계 쿼리·Redis로 개선
 
@@ -121,12 +167,24 @@ FileInNOut는 팀이 파일과 문서를 한곳에서 관리하고, 채팅과 �
 
 [채팅방 목록 조합 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatRoomService.java#L171-L238) · [읽지 않은 수 집계 쿼리](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatMessageRepository.java#L62-L77) · [참여자 수 집계 쿼리](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ParticipantsRepository.java#L39-L50) · [캐시 키·TTL·무효화 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatListCacheService.java)
 
+### 5. Redis 입장 상태로 현재 대화를 보고 있는 사용자의 알림 제외
+
+같은 채팅방을 보고 있는 사용자에게 새 메시지 알림까지 반복해서 전달하면 대화 중 불필요한 알림이 발생합니다. 현재 입장 여부는 자주 바뀌는 일시적인 상태이므로, 영구 데이터와 분리해 관리했습니다.
+
+<div class="port-decision">
+입장 시 방·사용자별 Redis 키를 5분 TTL로 저장하고, heartbeat로 갱신하며 퇴장 시 삭제하도록 구성했습니다. 메시지를 저장한 뒤에는 이 입장 상태를 확인해 현재 방을 보고 있는 사용자를 알림 대상에서 제외했습니다. 입장 상태와 10초 목록 캐시는 목적과 수명을 나누어 관리했습니다.
+</div>
+
+[입장 상태·TTL 관리 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatPresenceService.java) · [실시간 채팅 위키의 설계 설명](https://github.com/beyond-sw-camp/be24-4th-ShakeShackFile-In-N-Out-File/wiki/실시간-채팅-기능)
+
 ## 구현 근거와 프로젝트 문서
 
 - [개인 저장소 — 코드와 프로젝트 문서](https://github.com/Joohyeng/File-In-N-Out)
 - [팀 프로젝트 소개·시스템 아키텍처·배포 구성](https://github.com/Joohyeng/File-In-N-Out/blob/main/README.md)
+- [원본 위키 — 성능 테스트와 개선 전후 보고서](https://github.com/beyond-sw-camp/be24-4th-ShakeShackFile-In-N-Out-File/wiki/성능-테스트)
+- [원본 위키 — 실시간 채팅의 기술별 역할과 메시지 흐름](https://github.com/beyond-sw-camp/be24-4th-ShakeShackFile-In-N-Out-File/wiki/실시간-채팅-기능)
 - [Swagger·OpenAPI 문서](https://github.com/Joohyeng/File-In-N-Out/tree/main/backend/docs)
 - [메시지 이력 조회 부하 테스트 스크립트](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/ngrinder/chat/history.groovy)
 - [팀 원본 저장소](https://github.com/beyond-sw-camp/be24-4th-ShakeShackFile-In-N-Out-File)
 
-부하 테스트 스크립트에서는 메시지 이력 조회의 검증 시나리오를 확인할 수 있습니다.
+위의 `history.groovy`는 메시지 이력 단독 조회를 검증하는 자료이며, 비교 표의 그룹챗 시나리오와는 구분했습니다.

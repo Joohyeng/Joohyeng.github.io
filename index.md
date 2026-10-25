@@ -13,7 +13,7 @@ masthead_title: "Joohyeng's Portfolio"
   <div class="port-hero-main">
     <section class="port-intro-block">
       <h2 id="introduce">Introduce</h2>
-      <p class="port-intro-text">AI 광고물 검수 흐름과 실시간 채팅·알림을 개발한 백엔드 개발자 김주형입니다. 파일 처리·n8n 연계·결과 조회와 Kafka 기반 권한 동기화를 구현했습니다. 익숙하지 않은 기술도 배우고 적용하며, 기능이 사용자 화면까지 이어지도록 개발하고 있습니다.</p>
+      <p class="port-intro-text">AI 광고물 검수 흐름과 실시간 채팅·알림을 개발한 백엔드 개발자 김주형입니다. 파일 처리·n8n 검수·결과 조회와 Kafka 기반 권한 동기화를 구현했습니다. 익숙하지 않은 기술도 배우고 적용하며, 기능이 사용자 화면까지 이어지도록 개발하고 있습니다.</p>
     </section>
     <section class="port-contact-block">
       <h2 id="contact">Contact</h2>
@@ -43,8 +43,8 @@ masthead_title: "Joohyeng's Portfolio"
     <div class="ppc-type">AI Integration · MSA · 5인 팀</div>
     <div class="ppc-title">Callog</div>
     <div class="ppc-period">기업 간 캠페인 협업·광고물 검수 플랫폼</div>
-    <div class="ppc-desc">기업들이 캠페인을 함께 관리하고 광고물을 AI로 점검하는 서비스입니다. AI 검수·결과 조회 연계와 Kafka 기반 캠페인·권한 동기화를 담당했습니다.</div>
-    <div class="ppc-tags"><span class="ppc-tag">Spring Boot</span><span class="ppc-tag">n8n 연계</span><span class="ppc-tag">Kafka</span><span class="ppc-tag">MongoDB</span><span class="ppc-tag">Kubernetes</span></div>
+    <div class="ppc-desc">기업들이 캠페인을 함께 관리하고 광고물을 AI로 점검하는 서비스입니다. AI 검수·결과 조회와 Kafka 기반 캠페인·권한 동기화를 담당했습니다.</div>
+    <div class="ppc-tags"><span class="ppc-tag">Spring Boot</span><span class="ppc-tag">n8n</span><span class="ppc-tag">Kafka</span><span class="ppc-tag">MongoDB</span><span class="ppc-tag">Kubernetes</span></div>
   </a>
   <a class="port-proj-card" href="/project/file-in-n-out/">
     <div class="ppc-type">Realtime Collaboration · Team Project</div>
@@ -112,8 +112,8 @@ masthead_title: "Joohyeng's Portfolio"
 
   <div id="tab-ai" class="port-tab-panel active">
     <div class="port-skill-grid">
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-project-diagram"></i></div><div class="si-body"><div class="si-name">n8n 연계</div><div class="si-desc">추출 텍스트를 검수 워크플로에 전달하고 결과 저장·조회 흐름을 연결했습니다.</div></div></div>
-      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-file-alt"></i></div><div class="si-body"><div class="si-name">OCR · Layout Analysis 연계</div><div class="si-desc">파일의 내용 추출 기능을 AI 판사 모듈에 연결하고 분석 산출물을 관리했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-project-diagram"></i></div><div class="si-body"><div class="si-name">n8n</div><div class="si-desc">추출 텍스트를 검수 워크플로에 전달하고 결과 저장·조회 흐름을 연결했습니다.</div></div></div>
+      <div class="port-skill-item"><div class="si-icon"><i class="fas fa-file-alt"></i></div><div class="si-body"><div class="si-name">OCR · Layout Analysis</div><div class="si-desc">파일의 내용 추출 기능을 AI 판사 모듈에 연결하고 분석 산출물을 관리했습니다.</div></div></div>
       <div class="port-skill-item"><div class="si-icon"><i class="fas fa-exchange-alt"></i></div><div class="si-body"><div class="si-name">AI 결과 처리</div><div class="si-desc">작업 식별자로 결과와 파일 정보를 연결하고 오류 정보·상세 조회를 구성했습니다.</div></div></div>
     </div>
   </div>

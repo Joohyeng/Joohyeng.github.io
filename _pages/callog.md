@@ -13,7 +13,7 @@ toc_sticky: true
 <div class="port-meta-bar">
   <div class="port-meta-item"><div class="port-meta-label">유형</div><div class="port-meta-value">기업 간 캠페인 협업 플랫폼</div></div>
   <div class="port-meta-item"><div class="port-meta-label">팀 구성</div><div class="port-meta-value">5인 팀 프로젝트</div></div>
-  <div class="port-meta-item"><div class="port-meta-label">핵심 경험</div><div class="port-meta-value">AI 검수 연계 · Kafka 권한 동기화</div></div>
+  <div class="port-meta-item"><div class="port-meta-label">핵심 경험</div><div class="port-meta-value">AI 검수 · Kafka 권한 동기화</div></div>
   <div class="port-meta-item"><div class="port-meta-label">GitHub</div><div class="port-meta-value"><a href="https://github.com/Joohyeng/Callog" target="_blank" rel="noopener noreferrer">코드·프로젝트 문서 ↗</a></div></div>
 </div>
 
@@ -21,21 +21,42 @@ toc_sticky: true
 
 Callog는 기업들이 캠페인의 일정·자료·참여자를 함께 관리하고, 제작한 광고물의 위험 요소를 AI로 점검하도록 돕는 협업 플랫폼입니다. 기업 매칭, 캠페인 운영, 광고물 검수를 하나의 서비스 안에서 연결했습니다.
 
-저는 **인증·조직 관리와 AI 검수 연계**를 담당했습니다. 특히 파일에서 내용을 추출해 n8n 검수를 요청하고 결과를 조회하는 흐름을 연결했으며, 이후 AI 판사 서비스를 분리하면서 필요한 캠페인·참여자 정보를 Kafka로 전달하도록 구현했습니다.
-
-<figure>
-  <a href="https://github.com/user-attachments/assets/9d6b2723-656b-474c-ade0-b297ba6d6a83" target="_blank" rel="noopener noreferrer">
-    <img src="https://github.com/user-attachments/assets/9d6b2723-656b-474c-ade0-b297ba6d6a83" alt="Callog 캠페인의 AI 검수 내역 화면: 검수 상태와 결과, 상세 조회 진입점" loading="lazy" />
-  </a>
-  <figcaption>팀 Frontend README에 공개된 AI 검수 내역 화면입니다. 캠페인별 요청 상태와 결과를 확인하고 상세 조회로 이동하는 흐름을 보여줍니다.</figcaption>
-</figure>
+저는 **인증·조직 관리와 AI 검수 기능**을 담당했습니다. 특히 파일에서 내용을 추출해 n8n 검수를 요청하고 결과를 조회하는 흐름을 연결했으며, 이후 AI 판사 서비스를 분리하면서 필요한 캠페인·참여자 정보를 Kafka로 전달하도록 구현했습니다.
 
 ## 담당 기능
 
-- **AI 검수 연계** — 파일 업로드, OCR·레이아웃 분석 연계, n8n 검수 호출을 AI 판사 모듈로 옮기고 요청·응답 흐름을 연결
+- **AI 검수 처리** — 파일 업로드, OCR·레이아웃 분석과 n8n 검수 호출을 AI 판사 모듈로 옮기고 요청·응답 흐름을 연결
 - **결과 저장·조회** — 분석 작업 식별자와 원본 파일·추출 결과·검수 결과를 연결하고, 메타데이터 저장과 상세 조회 API·화면을 구현
 - **AI 판사 서비스 분리** — 캠페인 생성·참여자 변경 이벤트를 Kafka로 전달하고, AI 판사 서버가 MongoDB의 권한 정보를 조회해 검수 요청을 처리하도록 구성
 - **인증·조직 관리** — 로그인·로그아웃·회원가입·비밀번호 재설정, 리프레시 토큰과 화면 접근 제어, 조직 연결·General Manager 역할·구성원 관리 기능을 구현
+
+## AI 검수 결과 화면
+
+광고물에서 추출한 내용을 검수한 뒤, 사용자는 **판단 등급과 조치 안내**를 먼저 확인하고 상세 화면에서 **문제 표현·판단 근거·원본 자료**를 함께 볼 수 있습니다. 아래는 기존 기능 시연 영상에서 검수가 완료된 장면을 발췌한 화면입니다.
+
+### 결과 등급과 조치 안내
+
+예시 광고물에 대해 반환된 ‘위험’ 등급과 수정 안내를 보여줍니다. 결과와 함께 내용 추출·OCR·AI 분석 단계의 처리 시간도 확인할 수 있도록 구성했습니다.
+
+<figure>
+  <a href="/assets/images/projects/callog-ai-verdict.png" target="_blank" rel="noopener noreferrer">
+    <img src="/assets/images/projects/callog-ai-verdict.png" width="600" alt="AI 검수 완료 후 위험 등급, 조치 안내와 단계별 처리 시간을 보여주는 실제 결과 화면" loading="lazy" />
+  </a>
+  <figcaption>검수 완료 후 표시된 판단 등급과 처리 정보. 이미지를 누르면 원본을 확인할 수 있습니다.</figcaption>
+</figure>
+
+### 검수 근거와 원본 자료 상세
+
+상세 조회에서는 등급만 표시하는 대신 원본 광고물과 검수 요약, 문제로 분류한 문구와 그 이유를 같은 화면에서 확인하도록 연결했습니다. 저장한 결과 메타데이터와 파일 참조를 활용하는 화면입니다.
+
+<figure>
+  <a href="/assets/images/projects/callog-ai-result-detail.png" target="_blank" rel="noopener noreferrer">
+    <img src="/assets/images/projects/callog-ai-result-detail.png" width="760" alt="원본 광고물, 위험 등급, 조치 안내, 검수 요약과 문제 표현을 확인하는 AI 검수 상세 결과" loading="lazy" />
+  </a>
+  <figcaption>결과 상세 조회 화면. 원본 자료와 AI가 반환한 판단 근거를 함께 제공합니다.</figcaption>
+</figure>
+
+[화면 출처 — 팀 README의 AI 자료 검수 시연](https://github.com/Joohyeng/Callog/blob/main/frontend/README.md#ai-자료-검수)
 
 ## AI 검수 처리 흐름
 
@@ -45,7 +66,7 @@ Callog는 기업들이 캠페인의 일정·자료·참여자를 함께 관리�
 | --- | --- | --- |
 | 파일 접수 | 광고물을 업로드하고 분석 작업 식별자를 생성 | 원본 파일 위치, 파일명·형식, `analysisJobId` |
 | 내용 추출 | 파일 형식에 따라 텍스트를 추출하고 OCR·레이아웃 분석 결과를 활용 | 추출 텍스트, 이미지 등 분석 산출물 |
-| AI 검수 연계 | 추출한 텍스트를 n8n 웹훅으로 전달하고 검수 응답을 수신 | 검수 상태, 판단 이유, 수정 제안 등 |
+| AI 검수 | 추출한 텍스트를 n8n 웹훅으로 전달하고 검수 응답을 수신 | 검수 상태, 판단 이유, 수정 제안 등 |
 | 결과 저장·조회 | 파일·분석 산출물과 결과를 연결해 저장하고 상세 조회 API로 제공 | 결과 메타데이터, 파일 참조, 오류 정보, 단계별 처리 시간 |
 
 검수 요청은 `POST /aijudge/check/file`, 분석 상세 조회는 `GET /aijudge/analyses/{analysisJobId}`로 연결했습니다. Gateway의 라우팅을 거쳐 AI 판사 서버로 전달하며, 캠페인 정보를 포함한 검수 요청에는 동기화된 참여자 정보로 접근 범위를 확인합니다.
@@ -60,7 +81,7 @@ Callog는 기업들이 캠페인의 일정·자료·참여자를 함께 관리�
   <div class="port-tech-group"><div class="ptg-label">Frontend</div><div class="ptg-badges"><span class="port-badge pb-b">Vue 3</span><span class="port-badge pb-b">JavaScript</span></div></div>
   <div class="port-tech-group"><div class="ptg-label">Backend &amp; Auth</div><div class="ptg-badges"><span class="port-badge pb-b">Java</span><span class="port-badge pb-b">Spring Boot</span><span class="port-badge pb-b">Spring Security</span><span class="port-badge pb-b">JWT</span></div></div>
   <div class="port-tech-group"><div class="ptg-label">Messaging &amp; Data</div><div class="ptg-badges"><span class="port-badge pb-p">Kafka</span><span class="port-badge pb-g">MongoDB</span><span class="port-badge pb-g">MariaDB</span></div></div>
-  <div class="port-tech-group"><div class="ptg-label">AI Integration</div><div class="ptg-badges"><span class="port-badge pb-r">n8n 연계</span><span class="port-badge pb-r">OCR 연계</span><span class="port-badge pb-r">Layout Analysis 연계</span></div></div>
+  <div class="port-tech-group"><div class="ptg-label">AI Integration</div><div class="ptg-badges"><span class="port-badge pb-r">n8n</span><span class="port-badge pb-r">OCR</span><span class="port-badge pb-r">Layout Analysis</span></div></div>
   <div class="port-tech-group"><div class="ptg-label">Deployment</div><div class="ptg-badges"><span class="port-badge pb-o">Docker</span><span class="port-badge pb-o">Kubernetes</span></div></div>
 </div>
 
@@ -84,7 +105,7 @@ Callog는 기업들이 캠페인의 일정·자료·참여자를 함께 관리�
 광고물 검수는 파일 업로드, 내용 추출, 외부 검수 요청, 결과 저장이 이어지는 작업입니다. 사용자가 원본과 분석 결과를 다시 확인하려면 각 단계의 산출물이 어느 요청에 속하는지 추적할 수 있어야 했습니다. 또한 AI 검수 호출이 실패한 경우에도 이미 추출한 내용과 오류 정보를 확인할 수 있는 구조가 필요했습니다.
 
 <div class="port-decision">
-파일 처리와 OCR·레이아웃 분석, n8n 연계를 AI 판사 모듈로 옮겼습니다. 분석 작업 식별자를 기준으로 원본, 추출 텍스트, 이미지와 결과 JSON을 연결하고, MongoDB에 결과 메타데이터를 저장해 상세 조회에 활용했습니다. 검수 호출 단계에서 예외가 발생하면 추출 결과와 오류 정보를 포함한 응답을 구성해 보관하고 실패 이벤트를 전달하도록 연결했습니다.
+파일 처리와 OCR·레이아웃 분석, n8n 검수 호출을 AI 판사 모듈로 옮겼습니다. 분석 작업 식별자를 기준으로 원본, 추출 텍스트, 이미지와 결과 JSON을 연결하고, MongoDB에 결과 메타데이터를 저장해 상세 조회에 활용했습니다. 검수 호출 단계에서 예외가 발생하면 추출 결과와 오류 정보를 포함한 응답을 구성해 보관하고 실패 이벤트를 전달하도록 연결했습니다.
 </div>
 
 | 저장 대상 | 저장 방식 | 사용 목적 |
