@@ -46,56 +46,6 @@ FileInNOut는 팀이 파일과 문서를 한곳에서 관리하고, 채팅과 �
 
 아래 기술 의사결정에는 이 흐름을 구현한 코드와 조회 개선 근거를 연결했습니다.
 
-## 그룹챗 성능 테스트 비교
-
-### 테스트 대상과 조건
-
-**로그인한 가상 사용자들이 그룹챗의 조회·생성·삭제 작업을 수행하도록 구성한 nGrinder 부하 테스트**입니다. `WaffleBearGroupChatScenario`는 팀 위키에서 이 테스트를 구분하는 스크립트 이름입니다. 위키에 설명된 범위와 원본 보고서에서 확인되는 조건은 다음과 같습니다.
-
-| 구분 | 테스트 내용 |
-| --- | --- |
-| 인증 | 로그인 후 발급받은 Bearer 토큰으로 기능 API 호출 |
-| 대상 작업 | 그룹챗의 조회·생성·삭제가 섞인 흐름 — 팀 위키 설명 기준 |
-| 부하 조건 | 개선 전후 모두 **가상 사용자 100명(100 VUser)** 설정 |
-| 측정 지표 | 기록 대상 테스트의 초당 처리량(TPS)과 1회 평균 소요 시간 |
-
-### 개선 전후 결과
-
-같은 100 VUser 설정에서 TPS는 **314.7 → 829.2**, 평균 테스트 시간은 **305.52 → 84.28ms**로 기록됐습니다. 그룹챗 관련 작업이 섞인 부하에서, 기록 대상 테스트의 처리량은 늘고 평균 소요 시간은 줄었습니다.
-
-| 지표 | 개선 전 | 개선 후 | 변화 |
-| --- | --- | --- | --- |
-| 총 VUser | 100 | 100 | 동일 |
-| TPS | 314.7 | 829.2 | 약 **2.63배** |
-| 최고 TPS | 407.0 | 981.0 | 약 2.41배 |
-| 평균 테스트 시간 | 305.52ms | 84.28ms | 약 **72.4% 감소** |
-| 총 실행 테스트 | 5,044 | 5,004 | 원본 기록 |
-| 성공한 테스트 | 5,044 | 5,004 | 원본 기록 |
-| 에러 | 0 | 0 | 두 실행 모두 0건 |
-| 동작 시간 | 23초 | 13초 | 원본 기록 |
-
-위키는 그룹챗 개선 항목으로 **메시지 목록의 프로필 이미지 배치 조회와 조회 컬럼의 인덱스 보강**을 정리합니다. 현재 메시지 목록 코드에서도 메시지 식별자별 미읽음 수를 묶어서 집계하고, 같은 발신자의 프로필 이미지 조회 결과를 요청 안에서 재사용하는 구조를 확인할 수 있습니다.
-
-**해석 범위:** 공개된 자료에는 해당 시나리오의 원본 스크립트가 없어, 개별 API의 호출 순서·비중과 테스트 1회로 집계되는 범위까지는 확인되지 않습니다. 따라서 이 수치는 **팀 위키의 그룹챗 부하 테스트 결과**로 제시하며, 메시지 이력 API 하나의 응답시간이나 WebSocket 메시지의 초당 전달 건수로 해석할 수는 없습니다. 두 실행의 총 테스트 횟수와 동작 시간도 다릅니다.
-
-[성능 테스트 원문과 개선 항목](https://github.com/beyond-sw-camp/be24-4th-ShakeShackFile-In-N-Out-File/wiki/성능-테스트#4-7-그룹-챗) · [메시지 목록의 묶음 집계·프로필 결과 재사용 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatMessageService.java#L55-L105)
-
-<details>
-  <summary>nGrinder 원본 보고서 — 개선 전·후 화면</summary>
-  <figure>
-    <a href="/assets/images/projects/fileinnout-group-chat-before.png" target="_blank" rel="noopener noreferrer">
-      <img src="/assets/images/projects/fileinnout-group-chat-before.png" alt="그룹챗 개선 전 nGrinder 보고서: 100 VUser, TPS 314.7, 평균 테스트 시간 305.52ms, 에러 0건" loading="lazy" />
-    </a>
-    <figcaption>개선 전 — 팀 위키 성능 테스트 원본 보고서</figcaption>
-  </figure>
-  <figure>
-    <a href="/assets/images/projects/fileinnout-group-chat-after.png" target="_blank" rel="noopener noreferrer">
-      <img src="/assets/images/projects/fileinnout-group-chat-after.png" alt="그룹챗 개선 후 nGrinder 보고서: 100 VUser, TPS 829.2, 평균 테스트 시간 84.28ms, 에러 0건" loading="lazy" />
-    </a>
-    <figcaption>개선 후 — 팀 위키 성능 테스트 원본 보고서</figcaption>
-  </figure>
-</details>
-
 ## 기술 스택
 
 ### 직접 사용한 기술
@@ -159,24 +109,30 @@ SSE는 앱 내부의 단방향 상태 갱신, WebSocket/STOMP는 채팅방의 �
 
 [알림 서비스 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/notification/NotificationService.java) · [Web Push 구독 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/frontend/src/utils/pushNotification.js) · [Service Worker의 화면 상태 분기](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/frontend/public/sw.js)
 
-### 4. 채팅방 목록의 N+1 조회 병목을 페이지네이션·집계 쿼리·Redis로 개선
+### 4. DB 페이지네이션·집계 쿼리·Redis로 채팅 조회의 반복 처리 개선
 
-채팅방 목록에는 마지막 메시지, 읽지 않은 메시지 수, 참여자 수를 함께 표시해야 했습니다. 초기 구현에서는 채팅방을 조회한 뒤 각 채팅방의 부가 정보를 다시 조회하면서, 채팅방 수만큼 데이터베이스 접근이 반복되는 N+1 문제가 발생했습니다. 목록의 부가 정보를 방마다 개별 조회하는 구조를 개선해야 했습니다.
+초기 채팅방 목록은 사용자가 참여한 방을 모두 조회한 뒤, 방마다 읽지 않은 메시지 수와 마지막 메시지를 개별 조회했습니다. 페이지 구분도 전체 목록을 가져온 후 Java에서 잘라내는 방식이어서, 한 페이지를 요청해도 모든 방의 부가 정보를 조회하는 구조였습니다. 메시지 이력에서도 각 메시지의 미읽음 수와 발신자 프로필 이미지를 반복 조회했습니다.
 
 <div class="port-decision">
 목록을 DB 페이지네이션으로 나눈 뒤 해당 페이지의 채팅방 식별자를 모았습니다. 참여자 수와 읽지 않은 메시지 수는 이 식별자 묶음을 기준으로 집계하고, 마지막 메시지는 채팅방에 저장된 요약 정보를 활용했습니다. 반복 요청에는 사용자·페이지·크기별 Redis 캐시를 사용하고, 메시지 전송·읽음 처리 등 목록에 영향을 주는 변경이 생기면 해당 참여자의 캐시를 무효화하도록 연결했습니다.
 </div>
 
+메시지 이력도 현재 페이지의 메시지 식별자를 모아 미읽음 수를 한 번에 집계하도록 바꿨습니다. 발신자 프로필 이미지 URL은 요청 내 Map에 저장해, 같은 발신자의 URL을 다시 사용할 수 있도록 했습니다.
 
-| 개선한 부분 | 실제 구현 방식 |
-| --- | --- |
-| 한 번에 조회하는 범위 | `PageRequest.of(page, size)`로 채팅방 목록을 페이지 단위 조회 |
-| 참여자 수 | 페이지에 포함된 `roomIds`를 묶어 `IN`·`GROUP BY`로 집계 |
-| 읽지 않은 메시지 수 | 사용자별 마지막 읽음 식별자와 입장 시각을 조건으로 방별 집계 |
-| 마지막 메시지 | 채팅방의 `lastMessage`·`lastMessageTime` 요약 필드 활용 |
-| 반복 요청과 변경 반영 | 10초 TTL 캐시를 사용하고 전송·읽음 처리 시 참여자의 캐시 무효화 |
+아래는 직접 작성한 커밋(`772b934`, 작성자 `kjh`)에서 확인할 수 있는 변경 전후입니다.
 
-**구현 결과:** 참여자 수와 읽지 않은 메시지 수를 방별로 반복 조회하던 부분을 묶음 집계로 변경하고, 페이지 크기와 캐시를 통해 목록 조회 범위를 제어했습니다. 캐시가 있는 경우의 조회 경로와 데이터 변경 시의 무효화를 함께 구성했습니다.
+| 처리 대상 | 변경 전 | 변경 후 |
+| --- | --- | --- |
+| 채팅방 목록의 페이지 구분 | 전체 목록과 부가 정보를 조회한 뒤 `subList`로 자름 | `PageRequest`로 DB에서 페이지 조회 후 해당 방의 정보 조합 |
+| 채팅방별 미읽음 수 | 방마다 개별 count 조회 | 현재 페이지의 `roomIds`를 묶어 집계 |
+| 채팅방별 마지막 메시지 | 방마다 마지막 메시지 개별 조회 | 채팅방의 `lastMessage`·`lastMessageTime` 요약 필드 활용 |
+| 메시지별 미읽음 수 | 메시지마다 개별 count 조회 | 현재 페이지의 `messageIds`를 묶어 집계 |
+| 발신자 프로필 이미지 | 메시지마다 URL 조회 | 요청 내 Map으로 같은 발신자의 URL 재사용 |
+| 같은 목록의 반복 요청 | 요청마다 목록 조합 | 사용자·페이지·크기별 10초 TTL 캐시와 변경 시 무효화 추가 |
+
+**구현 결과:** 전체 목록을 가져와 나누던 처리를 DB 페이지 조회로 옮겼고, 방별·메시지별 미읽음 수를 반복 조회하던 코드를 식별자 묶음 단위의 집계로 변경했습니다. 목록 캐시와 데이터 변경 시의 무효화도 함께 구성했습니다.
+
+[직접 작성한 변경 전후 커밋 — `kjh`, 772b934](https://github.com/Joohyeng/File-In-N-Out/commit/772b9340fe5e002396254b70157035f70209376d) · [메시지 목록의 묶음 집계·프로필 URL 재사용 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatMessageService.java#L55-L105)
 
 [채팅방 목록 조합 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatRoomService.java#L171-L238) · [읽지 않은 수 집계 쿼리](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatMessageRepository.java#L62-L77) · [참여자 수 집계 쿼리](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ParticipantsRepository.java#L39-L50) · [캐시 키·TTL·무효화 코드](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/src/main/java/com/example/WaffleBear/chat/ChatListCacheService.java)
 
@@ -194,10 +150,7 @@ SSE는 앱 내부의 단방향 상태 갱신, WebSocket/STOMP는 채팅방의 �
 
 - [개인 저장소 — 코드와 프로젝트 문서](https://github.com/Joohyeng/File-In-N-Out)
 - [팀 프로젝트 소개·시스템 아키텍처·배포 구성](https://github.com/Joohyeng/File-In-N-Out/blob/main/README.md)
-- [원본 위키 — 성능 테스트와 개선 전후 보고서](https://github.com/beyond-sw-camp/be24-4th-ShakeShackFile-In-N-Out-File/wiki/성능-테스트)
 - [원본 위키 — 실시간 채팅의 기술별 역할과 메시지 흐름](https://github.com/beyond-sw-camp/be24-4th-ShakeShackFile-In-N-Out-File/wiki/실시간-채팅-기능)
 - [Swagger·OpenAPI 문서](https://github.com/Joohyeng/File-In-N-Out/tree/main/backend/docs)
-- [메시지 이력 조회 부하 테스트 스크립트](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/ngrinder/chat/history.groovy)
+- [메시지 이력 조회용 nGrinder 스크립트](https://github.com/Joohyeng/File-In-N-Out/blob/cfde24f3db34e079fb5a45fecb8edb6eacc9c2cd/backend/ngrinder/chat/history.groovy)
 - [팀 원본 저장소](https://github.com/beyond-sw-camp/be24-4th-ShakeShackFile-In-N-Out-File)
-
-위의 `history.groovy`는 메시지 이력 단독 조회를 검증하는 자료이며, 비교 표의 그룹챗 시나리오와는 구분했습니다.
